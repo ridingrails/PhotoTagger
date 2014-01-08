@@ -18,32 +18,30 @@
 //= require underscore
 //
 //= require_tree ./models
+//= require_tree ./views
 //= require_tree ../templates
-//
 //= require_tree .
 
-_.extend(PT, {
-  initialize:   function () {
-    PT.Photo.fetchByUserId(CURRENT_USER_ID, function () {
-      PT.showPhotosIndex();
-    });
-  },
+PT.initialize = function(user_id) {
+  PT.showPhotosIndex();
+	var photos;
 
-  showPhotoDetail: function (photo) {
-    var content = $("#content");
+	PT.Photo.fetchByUserId(user_id, function(photoArray) {
+		photos = photoArray;
+	});
+}
 
-    var photoDetailView = new PT.PhotoDetailView(photo);
-    content.html(photoDetailView.render().$el);
-  },
+PT.showPhotosIndex = function() {
+	var view = new PT.PhotosListView();
+	var form = new PT.PhotosFormView();
+	view.render();
+	$('#content').append(view.$el);
+	form.render();
+	$('#content').append(form.$el);
+}
 
-  showPhotosIndex: function () {
-    var content = $("#content");
-    content.empty();
-
-    var photosListView = new PT.PhotosListView();
-    content.append(photosListView.render().$el);
-
-    var photoFormView = new PT.PhotoFormView();
-    content.append(photoFormView.render().$el);
-  },
-});
+PT.showPhotoDetail = function(photo) {
+	var view = new PT.PhotoDetailView(photo);
+	view.render();
+	$('#content').append(view.$el);
+}

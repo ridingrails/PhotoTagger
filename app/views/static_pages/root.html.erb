@@ -1,2 +1,11 @@
 <div id="content">
 </div>
+
+<script>
+	<% if logged_in? %>
+	CURRENT_USER_ID = <%= current_user.id %>;
+	<% end %>
+	$(function() {
+		PT.initialize(CURRENT_USER_ID);
+	});
+</script>

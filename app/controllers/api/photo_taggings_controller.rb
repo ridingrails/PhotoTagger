@@ -1,4 +1,5 @@
 class Api::PhotoTaggingsController < ApplicationController
+
   before_filter :require_current_user!, :only => [:create]
   before_filter :require_owner_user!, :only => [:create]
 
